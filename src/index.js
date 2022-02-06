@@ -4,13 +4,10 @@ module.exports = function check(str, bracketsConfig) {
   let equalSymbol = [];
 
   for (let item of bracketsConfig) {
-    //в каждом подмассиве
     for (let i = 0; i < item.length; i += 2) {
-      //если символ открытия == символу закрытия, выносим в отдельный массив
       if (item[i] === item[i + 1]) {
         equalSymbol.push(item[i]);
       } else {
-        //иначе заносим в объект в виде 'символ закрытия': 'символ открытия'
         bracketsPair[item[i + 1]] = item[i];
       }
     }
