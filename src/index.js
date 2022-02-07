@@ -1,42 +1,34 @@
 module.exports = function check(str, bracketsConfig) {
-  const openBrackets = ['(', '{', '[', '|'];
-  const bracketsPair = {}
-  let equalSymbol = [];
+  let openBrackets = []
+  let bracketsPair = {}
 
-  for (let item of bracketsConfig) {
-    for (let i = 0; i < item.length; i += 2) {
-      if (item[i] === item[i + 1]) {
-        equalSymbol.push(item[i]);
-      } else {
-        bracketsPair[item[i + 1]] = item[i];
-      }
-    }
-  }
+  bracketsConfig.map((subArr) => openBrackets.push(subArr[0]))
+  bracketsConfig.forEach((subArr) => (bracketsPair[subArr[1]] = subArr[0]))
 
   let stack = []
   for (let i = 0; i < str.length; i++) {
-    
-    let currentBracket = str[i]
+    let currentBracket = str[i];
     if (openBrackets.includes(currentBracket)) {
-      stack.push(currentBracket);
-    } else {
-      if (str.length === 0) {
-        return false
+      if (Object.keys(bracketsPair).includes(currentBracket) && stack[stack.length - 1] === currentBracket) {
+        stack.pop();
+      } else {
+        stack.push(currentBracket);
       }
 
+    } else {
+      if (stack.length === 0) {
+        return false;
+      }
       let lastElement = stack[stack.length - 1];
-      
       if (bracketsPair[currentBracket] === lastElement) {
         stack.pop();
       } else {
-        return false
+        return false;
       }
     }
   }
-
-  return stack.length === 0
-}
-
+  return stack.length === 0;
+};
 
 
 
